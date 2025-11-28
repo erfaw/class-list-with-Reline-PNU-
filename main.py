@@ -47,8 +47,23 @@ for i, clss in chrome.classes_df.iterrows():
             continue
 
         ## CATCH START AND END TIME FROM THAT ROW OF TABLE
-        start_time = session.find_elements(By.CSS_SELECTOR, "td")[2].text
-        end_time = session.find_elements(By.CSS_SELECTOR, "td")[3].text
+        start_time = chrome.format_converter(session.find_elements(By.CSS_SELECTOR, "td")[2].text)
+
+        # TODO : somehow 1. convert this format to en format, 2. somehow convert persian calendar to christian calendar
+                # if len(start_time.split()) != 6 and len(start_time.split()) > 6:
+
+                #     # TODO : figure it out how get object from these code, (i curious about chrome.format_converter, we must try one time without it)
+                #     ### tarkibe barande :
+                #                 # format_string= r'%A %d %B %Y - %H:%M'
+                #                 # x=jdatetime.datetime.strptime(end_, format_string,)
+
+
+                #     first_part = "".join(start_time.split()[0:2])
+                #     second_part = start_time.split()[2:]
+                #     end_ = [first_part]
+                #     end_.extend(second_part)
+
+        end_time = chrome.format_converter(session.find_elements(By.CSS_SELECTOR, "td")[3].text)
 
         ## MAKE A RECORD ON DATAFRAME
         sessions_df.loc[len(sessions_df)] = {
@@ -66,9 +81,7 @@ for i, clss in chrome.classes_df.iterrows():
             sheet_name=f"{clss["lesson_name"]}",
             # startrow= 1
         )
-
-
-input()
+    print()
 ## make a test event to learn.
         # calendar.make_new_event(
         #     # TODO: check if this code need change or not (based on input from reline)
