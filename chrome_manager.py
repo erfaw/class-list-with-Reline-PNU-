@@ -76,7 +76,7 @@ class ChromeManager:
         ## CREATE PANDAS DATAFRAME FOR CLASSES
         self.classes_df = pd.DataFrame(
             data={},
-            columns=["ID", "department", "semester", "lesson", "sub-gp", "master", "class Type(distance/in-Person)", "link"]
+            columns=["ID", "department", "semester", "lesson_name", "lesson_group_number", "sub-gp", "master", "class Type(distance/in-Person)", "link"]
         )
 
         ## catch each part of table and record it to DF
@@ -88,7 +88,8 @@ class ChromeManager:
             i+=1
             lesson_semester = lesson.find_elements(By.CSS_SELECTOR, "td")[i].get_attribute('innerHTML')
             i+=1
-            lesson_lesson = lesson.find_elements(By.CSS_SELECTOR, "td")[i].get_attribute('innerHTML')
+            lesson_lesson_name = lesson.find_elements(By.CSS_SELECTOR, "td")[i].get_attribute('innerHTML').split('(')[0]
+            lesson_lesson_group_number = lesson.find_elements(By.CSS_SELECTOR, "td")[i].get_attribute('innerHTML').split('(')[1].replace(")",'')
             i+=1
             lesson_sub_gp = lesson.find_elements(By.CSS_SELECTOR, "td")[i].get_attribute('innerHTML')
             i+=1
@@ -103,7 +104,8 @@ class ChromeManager:
                 "ID":lesson_ID,
                 "department":lesson_department,
                 "semester":lesson_semester,
-                "lesson":lesson_lesson,
+                "lesson_name":lesson_lesson_name,
+                "lesson_group_number":lesson_lesson_group_number,
                 "sub-gp":lesson_sub_gp,
                 "master":lesson_master,
                 "class Type(distance/in-Person)":lesson_class_type,
@@ -111,3 +113,7 @@ class ChromeManager:
             }
         
         print("\nALL CLASSES SCRAPED TO DATAFRAME!! \n")
+
+    def format_converter(self, string):
+        """catch a not formated string and replace letters with what we want. and return it"""
+        return string.replace(r"/", '-').replace(r"،", ',').replace(r"۱",'1').replace(r"۲",'2').replace(r"۳",'3').replace(r"۴",'4').replace(r"۵",'5').replace(r"۶",'6').replace(r"۷",'7').replace(r"۸",'8').replace(r"۹",'9').replace(r"۹",'9').replace(r"۰",'0').replace(r")",')').replace(r"(",'(').replace(r"(",'(').replace(r"-",'-').replace(r"امتحان",'EXAM').replace(r"ساعت",'time').replace(r"درس(ت)", 'class').replace(r":", ':').strip()
