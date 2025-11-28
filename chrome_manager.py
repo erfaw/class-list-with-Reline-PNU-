@@ -11,12 +11,9 @@ class ChromeManager:
         """swith driver focus to last exist tab in browser"""
         self.driver.switch_to.window(self.driver.window_handles[-1])
 
-    def get_reline(self):
-        """get and opens reline site to login"""
-        self.driver.get(f"{RELINE_URL}Identity/Account/Login?returnUrl=%2F")
-
     def login_reline(self, username, password,):
         """login to reline with user/pass in .env"""
+        self.driver.get(f"{RELINE_URL}Identity/Account/Login?returnUrl=%2F")
         self.switch_last_page()
         ## WAIT TO LOAD LOGIN PAGE
         WebDriverWait(
