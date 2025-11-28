@@ -24,6 +24,49 @@ excel_fp = excel_fp_dir/'result.xlsx'
 chrome.classes_df.index= pd.RangeIndex(1, len(chrome.classes_df)+1)
 chrome.classes_df.to_excel(excel_fp,"all_classes")
 
+## LOOP THROUGH CLASSES_DF FOR EVERY LINK IS IN IT,
+for i, clss in chrome.classes_df.iterrows():
+    ## GET TO PAGE 
+    chrome.driver.get(clss.link)
+    time.sleep(3)
+
+    ## GET ALL OF ROWS FROM SESSIONS 
+    all_sessions = chrome.driver.find_element(By.CSS_SELECTOR, ".table").find_elements(By.CSS_SELECTOR, "tr")
+    ## make DF for classes times table
+    sessions_df = pd.DataFrame(
+        data={},
+        columns=["start", "end"]
+    )
+
+    ## LOOP THROUGH EACH SESSION AND FILL A DATAFRAME AND SHEET FOR IT WITH END AND START TIME AND DATE IN EXCEL FILE
+    is_first_round = True
+    for session in all_sessions:
+        ## IF IS FIRST PASS, (BECAUSE ITS HEADER OF TABLE)
+        if is_first_round:
+            is_first_round = False
+            continue
+
+        ## CATCH START AND END TIME FROM THAT ROW OF TABLE
+        start_time = session.find_elements(By.CSS_SELECTOR, "td")[2].text
+        end_time = session.find_elements(By.CSS_SELECTOR, "td")[3].text
+
+        ## MAKE A RECORD ON DATAFRAME
+        sessions_df.loc[len(sessions_df)] = {
+            "start": start_time,
+            "end": end_time
+        }
+
+    ## MAKE INDEXES OF DATAFRAME BEGIN WITH 1
+    sessions_df.index=pd.RangeIndex(1,len(sessions_df)+1)
+
+    ## WRITE DATAFRAME IN A SHEET WITH OWN SHEET_NAME IN EXCEL FILE
+    with pd.ExcelWriter(excel_fp, mode='a', if_sheet_exists='overlay', engine='openpyxl') as writer:
+        sessions_df.to_excel(
+            writer,
+            sheet_name=f"{clss["lesson_name"]}",
+            # startrow= 1
+        )
+
 
 input()
 ## make a test event to learn.
