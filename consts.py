@@ -13,3 +13,5 @@ EVENT_COLOR_ID = {
     "basil": 10,
     "tomato": 11,
 }
+
+RELINE_URL = "https://lms.markazi.pnu.ac.ir/"
