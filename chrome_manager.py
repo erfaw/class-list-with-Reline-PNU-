@@ -7,6 +7,8 @@ class ChromeManager:
         options.add_experimental_option("detach", True)
         self.driver = Chrome(options= options)
 
+        self.classes_df = None
+
     def switch_last_page(self):
         """swith driver focus to last exist tab in browser"""
         self.driver.switch_to.window(self.driver.window_handles[-1])
@@ -40,11 +42,72 @@ class ChromeManager:
         
         ## CHECK FOR LOGIN 
         self.switch_last_page()
-        WebDriverWait(
+        if WebDriverWait(
             driver= self.driver,
             timeout= 30,
             poll_frequency= 1,
         ).until(
             EC.title_is("داشبورد")
+        ):
+            print(f"LOGGED IN TO RELINE\nuser:\t<{username}>\n")
+
+    def go_to_classes_part(self):
+        self.driver.find_element(By.XPATH, "//a[contains(text(),'کلاس ها')]").click()
+        ## CHECK FOR 
+        self.switch_last_page()
+        if WebDriverWait(
+            driver= self.driver,
+            timeout= 30,
+            poll_frequency= 1,
+        ).until(
+            EC.title_is("کلاس")
+        ):
+            print(f"\nSWITCHED TO <classes list> PART\n")
+
+    def scrape_to_classes_df(self):
+        ## wait for load
+        WebDriverWait(self.driver, 30, 1).until(
+            EC.visibility_of_element_located((By.CSS_SELECTOR, ".card-body"))
+            )
+
+        ## CATCH ALL LESSONS FROM THIS SEMESTER
+        all_this_term_classes_title = [tr for tr in self.driver.find_elements(By.CSS_SELECTOR, "div.card-body #table tbody tr") if tr.get_attribute("style") == '']
+
+        ## CREATE PANDAS DATAFRAME FOR CLASSES
+        self.classes_df = pd.DataFrame(
+            data={},
+            columns=["ID", "department", "semester", "lesson", "sub-gp", "master", "class Type(distance/in-Person)", "link"]
         )
-        print(f"LOGGED IN TO RELINE\nuser:\t<{username}>")
+
+        ## catch each part of table and record it to DF
+        for lesson in all_this_term_classes_title:
+            i=0
+            lesson_ID = lesson.find_elements(By.CSS_SELECTOR, "td")[i].get_attribute('innerHTML')
+            i+=1
+            lesson_department = lesson.find_elements(By.CSS_SELECTOR, "td")[i].get_attribute('innerHTML').replace("دانشگاه پیام نور -", '')
+            i+=1
+            lesson_semester = lesson.find_elements(By.CSS_SELECTOR, "td")[i].get_attribute('innerHTML')
+            i+=1
+            lesson_lesson = lesson.find_elements(By.CSS_SELECTOR, "td")[i].get_attribute('innerHTML')
+            i+=1
+            lesson_sub_gp = lesson.find_elements(By.CSS_SELECTOR, "td")[i].get_attribute('innerHTML')
+            i+=1
+            lesson_master = lesson.find_elements(By.CSS_SELECTOR, "td")[i].get_attribute('innerHTML')
+            i+=1
+            lesson_class_type = str(lesson.find_elements(By.CSS_SELECTOR, "td")[i].text)
+            i+=1
+            lesson_link = lesson.find_elements(By.CSS_SELECTOR, "td")[i].find_element(By.CSS_SELECTOR, "a").get_attribute('href')
+
+            ##fill record to df
+            self.classes_df.loc[len(self.classes_df)] = {
+                "ID":lesson_ID,
+                "department":lesson_department,
+                "semester":lesson_semester,
+                "lesson":lesson_lesson,
+                "sub-gp":lesson_sub_gp,
+                "master":lesson_master,
+                "class Type(distance/in-Person)":lesson_class_type,
+                "link":lesson_link
+            }
+        
+        print("\nALL CLASSES SCRAPED TO DATAFRAME!! \n")
