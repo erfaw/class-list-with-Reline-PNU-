@@ -8,6 +8,8 @@ class GoogleCalendarManager:
         self.events = None
         self.iran_tz = pytz.timezone('Asia/Tehran') 
         self.check_token()
+        ## MAKE CALENDAR SERVICE, TO DO API CALLS THROUGH IT
+        self.service = self.make_service_for_calendar()
     
     def check_token(self):
         """checking existion of 'token.json' and credentials. THE FILE TOKEN.JSON STORES THE USER'S ACCESS AND REFRESH TOKENS, AND IS CREATED AUTOMATICALLY WHEN THE AUTHORIZATION FLOW COMPLETES FOR THE FIRST TIME."""
