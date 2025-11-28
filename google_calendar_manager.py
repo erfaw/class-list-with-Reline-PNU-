@@ -5,6 +5,8 @@ class GoogleCalendarManager:
     def __init__(self):
         self.creds = None 
         self.service = None
+        self.events = None
+        self.iran_tz = pytz.timezone('Asia/Tehran') 
     
     def check_token(self):
         """checking existion of 'token.json' and credentials. THE FILE TOKEN.JSON STORES THE USER'S ACCESS AND REFRESH TOKENS, AND IS CREATED AUTOMATICALLY WHEN THE AUTHORIZATION FLOW COMPLETES FOR THE FIRST TIME."""
@@ -61,4 +63,57 @@ class GoogleCalendarManager:
             print(f"\n{index}. Time: <{start}>\n\tsummary: <{event["summary"]}>")
             index += 1
 
-        print("\nEND OF EVENTS!!")     
+        print("\nEND OF EVENTS!!")  
+
+    def make_new_event(
+        self,
+        title,
+        start_time:datetime.time,
+        end_time :datetime.time,
+        end_date=datetime.date.today(),
+        start_date=datetime.date.today(),
+        description='',
+        location= None,
+        ):
+        """make a Event in user Google Calendar and fill it with given arg details."""
+        start_date_time = (datetime.datetime.combine(
+            start_date, start_time, self.iran_tz
+        )-timedelta(minutes=4)).isoformat()
+        end_date_time = (datetime.datetime.combine(
+            end_date, end_time, self.iran_tz
+        )-timedelta(minutes=4)).isoformat()
+        event = {
+            'summary': title,
+            'location': None,
+            'description': description,
+            'start': {
+                'dateTime': f'{start_date_time}',
+                'timeZone': f'{self.iran_tz}',
+            },
+            'end': {
+                'dateTime': f'{end_date_time}',
+                'timeZone': f'{self.iran_tz}',
+            },
+            # 'recurrence': [
+            #     'RRULE:FREQ=DAILY;COUNT=2'
+            # ],
+            # 'attendees': [
+            #     {'email': 'lpage@example.com'},
+            #     {'email': 'sbrin@example.com'},
+            # ],
+            'reminders': {
+                'useDefault': False,
+                'overrides': [
+                {'method': 'popup', 'minutes': 15},
+                {'method': 'popup', 'minutes': 1},
+                {'method': 'popup', 'minutes': 60*24*30},
+                ],
+            },
+        }
+
+        ## api call to make
+        self.service.events().insert(
+            calendarId= 'primary',
+            body= event
+        ).execute()
+        print('EVENT CREATED')
