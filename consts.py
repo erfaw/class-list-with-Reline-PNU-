@@ -1,6 +1,6 @@
 SCOPES = ["https://www.googleapis.com/auth/calendar.events"]
 
-EVENT_COLOR = {
+EVENT_COLOR_ID = {
     "lavender": 1,
     "sage": 2,
     "grape": 3,
