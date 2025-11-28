@@ -15,7 +15,9 @@ def main():
         calendar.service = calendar.make_service_for_calendar()
 
         # Call the Calendar API
-        calendar.get_and_print_upcoming_10_events()
+        # calendar.get_and_print_upcoming_10_events()
+
+        #TODO: make a test event to learn.
 
     except HttpError as error:
         print(f"An error occurred: {error}")
