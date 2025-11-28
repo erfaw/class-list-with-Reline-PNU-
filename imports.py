@@ -20,6 +20,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 #dotenv
 from dotenv import load_dotenv
+#pandas
+import pandas as pd
+from pathlib import Path
 
 ### 3. self made
 from google_calendar_manager import GoogleCalendarManager
