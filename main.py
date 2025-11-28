@@ -8,7 +8,6 @@ chrome = ChromeManager()
 calendar = GoogleCalendarManager()
 
 ## LOGGING IN TO 'RELINE_URL'
-chrome.get_reline()
 chrome.login_reline(username=os.environ.get('USERNAME_RELINE'), password= os.environ.get("PASSWORD_RELINE"))
 
 
