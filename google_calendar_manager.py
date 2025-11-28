@@ -67,21 +67,25 @@ class GoogleCalendarManager:
 
     def make_new_event(
         self,
-        title,
+        title:str,
         start_time:datetime.time,
         end_time :datetime.time,
-        end_date=datetime.date.today(),
-        start_date=datetime.date.today(),
-        description='',
+        end_date:datetime.date=datetime.date.today(),
+        start_date:datetime.date=datetime.date.today(),
+        description:str='',
         location= None,
+        color_id:int= EVENT_COLOR_ID["tomato"]
         ):
         """make a Event in user Google Calendar and fill it with given arg details."""
+        ## MAKE A DATETIME WIHT ISO FORMAT (AND BRING BACK 4 MINUTES TO FIT WITH REAL WORLD)
         start_date_time = (datetime.datetime.combine(
             start_date, start_time, self.iran_tz
         )-timedelta(minutes=4)).isoformat()
         end_date_time = (datetime.datetime.combine(
             end_date, end_time, self.iran_tz
         )-timedelta(minutes=4)).isoformat()
+
+        ## MAKE EVENT DETAILS IN A DICTIONARY TO PASS TO API
         event = {
             'summary': title,
             'location': None,
@@ -94,6 +98,7 @@ class GoogleCalendarManager:
                 'dateTime': f'{end_date_time}',
                 'timeZone': f'{self.iran_tz}',
             },
+            ## COMMENTED OUT 'REPEAT' AND 'COMPANY' FUNCITONS FOR EACH EVENT
             # 'recurrence': [
             #     'RRULE:FREQ=DAILY;COUNT=2'
             # ],
@@ -101,6 +106,7 @@ class GoogleCalendarManager:
             #     {'email': 'lpage@example.com'},
             #     {'email': 'sbrin@example.com'},
             # ],
+            ## SET 1MINUTE, 15MINUTE, 4WEEK REMINDER
             'reminders': {
                 'useDefault': False,
                 'overrides': [
@@ -109,9 +115,11 @@ class GoogleCalendarManager:
                 {'method': 'popup', 'minutes': 60*24*30},
                 ],
             },
+            ## SET COLOR OF EVENT (MUST BE RED FOR CLASSES)
+            "colorId": color_id,
         }
 
-        ## api call to make
+        ## CALL API AND MAKE EVENT ON USER PRIMARLY CALENDAR 
         self.service.events().insert(
             calendarId= 'primary',
             body= event
