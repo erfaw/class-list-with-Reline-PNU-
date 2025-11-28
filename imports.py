@@ -23,6 +23,8 @@ from dotenv import load_dotenv
 #pandas
 import pandas as pd
 from pathlib import Path
+#jdatetime
+import jdatetime
 
 ### 3. self made
 from google_calendar_manager import GoogleCalendarManager
