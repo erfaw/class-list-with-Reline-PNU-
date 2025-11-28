@@ -3,6 +3,7 @@ import datetime
 from datetime import timedelta
 import os.path
 import pytz
+import time
 
 ### 2. third parties
 #google calendar api
@@ -17,7 +18,10 @@ from selenium.webdriver import ChromeOptions
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+#dotenv
+from dotenv import load_dotenv
 
 ### 3. self made
 from google_calendar_manager import GoogleCalendarManager
+from chrome_manager import ChromeManager
 from consts import *
