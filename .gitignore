@@ -1,5 +1,6 @@
 # me add 
-client_secret_1016618418552-3f8e4vlbp8osti5q3dr5mje2i5d9jdkl.apps.googleusercontent.com.json
+credentials.json
+token.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
