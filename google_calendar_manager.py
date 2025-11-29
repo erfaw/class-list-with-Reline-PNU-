@@ -134,8 +134,11 @@ class GoogleCalendarManager:
     
     def remove_event(self, _id,):
         """remove a event with its id"""
-        self.service.events().delete(
-            calendarId= 'primary',
-            eventId= _id,
-        ).execute()
+        try:
+            self.service.events().delete(
+                calendarId= 'primary',
+                eventId= _id,
+            ).execute()
+        except HttpError as e: 
+            print(e)
         print("EVENT DELETED!!")
