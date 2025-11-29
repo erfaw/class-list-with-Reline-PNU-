@@ -4,6 +4,8 @@ import subprocess as sp; sp.call('cls', shell=True)
 current_dir = Path(__file__).parent.resolve()
 load_dotenv()
 
+## TODO: MAKE A 'DATAMANAGER.PY' FILE AND MOVE DATA STORING AND DATA PROCESSING IN IT
+
 ## MAKE CALENDAR and CHROME DRIVER OBJECT
 chrome = ChromeManager()
 calendar = GoogleCalendarManager()
@@ -36,10 +38,11 @@ for i, clss in chrome.classes_df.iterrows():
     ## make DF for classes times table
     sessions_df = pd.DataFrame(
         data={},
-        columns=["start_persian", "end_persian", "start_christian", "end_christian"]
+        columns=["start_persian", "end_persian", "start_christian", "end_christian", "event_id", "event_link", "event_iCalUID"]
     )
 
     ## LOOP THROUGH EACH SESSION AND FILL A DATAFRAME AND SHEET FOR IT WITH END AND START TIME AND DATE IN EXCEL FILE
+    session_index = 1
     is_first_round = True
     for session in all_sessions:
         ## IF IS FIRST PASS, (BECAUSE ITS HEADER OF TABLE)
@@ -67,18 +70,28 @@ for i, clss in chrome.classes_df.iterrows():
             format= r'%A %d %B %Y - %H:%M'
             )
 
+        ## MAKE A EVENT FOR EACH SESSION IN GOOGLE CALENDAR
+        event_response = calendar.make_new_event(
+            title= f"Class: ({session_index}/{len(all_sessions)}) {clss["Fenglish"]}",
+            start_time= start_time.time(),
+            end_time= end_time.time(),
+            start_date= start_time.togregorian().date(),
+            end_date= end_time.togregorian().date(),
+            # TODO: make description clean
+            description= f"----------\nID=<{clss['ID']}>,\ndepartment=<{clss['department']}>\nsemester=<{clss['semester']}>\nGroup Num.=<{clss['lesson_group_number']}-{clss['sub-gp']}>\nclass type=<{clss['class Type(distance/in-Person)']}>\nLINK-Reline=<{clss['link']}>\n----------"
+        )
+
         ## MAKE A RECORD ON DATAFRAME (all in iso format)
         sessions_df.loc[len(sessions_df)] = {
             "start_persian": start_time.isoformat(),
             "end_persian": end_time.isoformat(),
             "start_christian":start_time.togregorian().isoformat(),
             "end_christian":end_time.togregorian().isoformat(),
+            "event_id":event_response['id'],
+            "event_link":event_response['htmlLink'],
+            "event_iCalUID":event_response['iCalUID'],
         }
-
-        ## TODO: MAKE A EVENT FOR EACH SESSION IN GOOGLE CALENDAR
-        # calendar.make_new_event(
-        #     title= 
-        # )
+        session_index += 1
 
     ## MAKE INDEXES OF DATAFRAME BEGIN WITH 1
     sessions_df.index=pd.RangeIndex(1,len(sessions_df)+1)
@@ -95,14 +108,3 @@ for i, clss in chrome.classes_df.iterrows():
     # TODO: make a notification for 'end of procedure'
     
 print("\nALL CLASSES AND SESSIONS INSERTED TO EXCEL FILE WITH GREGORIAN FORMAT DATE !!")
-
-## make a test event to learn.
-        # calendar.make_new_event(
-        #     # TODO: check if this code need change or not (based on input from reline)
-        #     start_time= datetime.time(7,0),
-        #     end_time=datetime.time(8,0),
-        #     title='salam',
-        #     # start_date=datetime.date(year=2025,month=10,day=27),
-        #     # end_date=datetime.date(year=2025,month=10,day=27),
-            
-        # )
