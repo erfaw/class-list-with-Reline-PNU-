@@ -78,7 +78,7 @@ class GoogleCalendarManager:
         start_date:datetime.date=datetime.date.today(),
         description:str='',
         location= None,
-        color_id:int= EVENT_COLOR_ID["tomato"]
+        color_id:int= EVENT_COLOR_ID["tangerine"]
         ) -> json:
         """make a Event in user Google Calendar and fill it with given arg details. then, return event creation response"""
         ## MAKE A DATETIME WIHT ISO FORMAT (AND BRING BACK 4 MINUTES TO FIT WITH REAL WORLD)
