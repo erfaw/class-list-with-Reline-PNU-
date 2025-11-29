@@ -102,13 +102,13 @@ class ChromeManager:
             ##fill record to df
             self.classes_df.loc[len(self.classes_df)] = {
                 "ID":lesson_ID,
-                "department":lesson_department,
-                "semester":lesson_semester,
-                "lesson_name":lesson_lesson_name,
-                "lesson_group_number":lesson_lesson_group_number,
-                "sub-gp":lesson_sub_gp,
-                "master":lesson_master,
-                "class Type(distance/in-Person)":lesson_class_type,
+                "department":self.format_converter(lesson_department),
+                "semester":self.format_converter(lesson_semester),
+                "lesson_name":self.format_converter(lesson_lesson_name),
+                "lesson_group_number":self.format_converter(lesson_lesson_group_number),
+                "sub-gp":self.format_converter(lesson_sub_gp),
+                "master":self.format_converter(lesson_master),
+                "class Type(distance/in-Person)":self.format_converter(lesson_class_type),
                 "link":lesson_link
             }
         
