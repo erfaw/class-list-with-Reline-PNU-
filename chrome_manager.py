@@ -76,7 +76,7 @@ class ChromeManager:
         ## CREATE PANDAS DATAFRAME FOR CLASSES
         self.classes_df = pd.DataFrame(
             data={},
-            columns=["ID", "department", "semester", "lesson_name", "lesson_group_number", "sub-gp", "master", "class Type(distance/in-Person)", "link"]
+            columns=["ID", "department", "semester", "lesson_name", "lesson_group_number", "sub-gp", "master", "class Type(distance/in-Person)", "link", "Fenglish"]
         )
 
         ## catch each part of table and record it to DF
@@ -98,6 +98,10 @@ class ChromeManager:
             lesson_class_type = str(lesson.find_elements(By.CSS_SELECTOR, "td")[i].text)
             i+=1
             lesson_link = lesson.find_elements(By.CSS_SELECTOR, "td")[i].find_element(By.CSS_SELECTOR, "a").get_attribute('href')
+            if Fenglish_class_names[self.format_converter(lesson_lesson_name).strip()]:
+                lesson_fenglish_name = Fenglish_class_names[self.format_converter(lesson_lesson_name).strip()]
+            else: 
+                lesson_fenglish_name = input(f"Insert Fenglish string for this lesson, <{self.format_converter(lesson_lesson_name)}>,\nCareful:\tthis gonna used to make events titles in Google Calendar!!\n>> ")
 
             ##fill record to df
             self.classes_df.loc[len(self.classes_df)] = {
@@ -109,8 +113,10 @@ class ChromeManager:
                 "sub-gp":self.format_converter(lesson_sub_gp),
                 "master":self.format_converter(lesson_master),
                 "class Type(distance/in-Person)":self.format_converter(lesson_class_type),
-                "link":lesson_link
+                "link":lesson_link,
+                "Fenglish": lesson_fenglish_name,
             }
+            print()
         
         print("\nALL CLASSES SCRAPED TO DATAFRAME!! \n")
 
