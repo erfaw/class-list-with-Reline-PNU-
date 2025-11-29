@@ -117,3 +117,10 @@ class ChromeManager:
     def format_converter(self, string):
         """catch a not formated string and replace letters with what we want. and return it"""
         return string.replace(r"/", '-').replace(r"،", ',').replace(r"۱",'1').replace(r"۲",'2').replace(r"۳",'3').replace(r"۴",'4').replace(r"۵",'5').replace(r"۶",'6').replace(r"۷",'7').replace(r"۸",'8').replace(r"۹",'9').replace(r"۹",'9').replace(r"۰",'0').replace(r")",')').replace(r"(",'(').replace(r"(",'(').replace(r"-",'-').replace(r"امتحان",'EXAM').replace(r"ساعت",'time').replace(r"درس(ت)", 'class').replace(r":", ':').replace("ي","ی").replace("ك", "ک").strip()
+    
+    def convert_persian_to_english_datestr(self, s):
+        for fa, en in persian_weekdays.items():
+            s = s.replace(fa, en)
+        for fa, en in persian_months.items():
+            s = s.replace(fa, en)
+        return s
