@@ -45,3 +45,13 @@ persian_months = {
     "بهمن": "Bahman",
     "اسفند": "Esfand",
 }
+
+Fenglish_class_names = {
+    "مبانی رایانش ابری": "Mabani Rayaneshe Abri (Shahram Shaverdian)",
+    "مبانی امنیت اطلاعات": "Mabani Amniat Etela'at (Tayebeh Khoshroy Nemati)",
+    "طراحی الگوریتمها": "Tarahi Algorithm ha (Tayebeh Khoshroy Nemati)",
+    "برنامه نویسی وب": "Barname Nevisi Web (KazemAli Eftekhari)",
+    "مهندسی نرم افزار": "Mohandesi Narm Afzar 2 (Hadi Mohamadi)",
+    "زبان های برنامه نویسی": "Zaban Haye Barname Nevisi (Mansoreh Nazari",
+    "فرهنگ وتمدن اسلام و ایران": "Farhang o Tamadon Eslam va Iran (Amir Masoud Safari)",
+}
