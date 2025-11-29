@@ -140,5 +140,7 @@ class GoogleCalendarManager:
                 eventId= _id,
             ).execute()
         except HttpError as e: 
+            # TODO: good to be just e.message
             print(e)
-        print("EVENT DELETED!!")
+        else:
+            print("EVENT DELETED!!")
