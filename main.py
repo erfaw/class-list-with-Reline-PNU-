@@ -36,7 +36,7 @@ for i, clss in chrome.classes_df.iterrows():
     ## make DF for classes times table
     sessions_df = pd.DataFrame(
         data={},
-        columns=["start", "end"]
+        columns=["start_persian", "end_persian", "start_christian", "end_christian"]
     )
 
     ## LOOP THROUGH EACH SESSION AND FILL A DATAFRAME AND SHEET FOR IT WITH END AND START TIME AND DATE IN EXCEL FILE
@@ -50,42 +50,29 @@ for i, clss in chrome.classes_df.iterrows():
         ### CATCH START AND END TIME FROM THAT ROW OF TABLE
         ## 1.START >
         #MAKE START_TIME EN TYPED
-        start_time = chrome.convert_persian_to_english_datestr(
-            chrome.format_converter(
-                session.find_elements(By.CSS_SELECTOR, "td")[2].text
-                )
-            )
-
-                # TODO : somehow 1. convert this format to en format, 2. somehow convert persian calendar to christian calendar
-                # if len(start_time.split()) != 6 or len(start_time.split()) > 6:
-                    # TODO : figure it out how get object from these code, (i curious about chrome.format_converter, we must try one time without it)
-                    ### tarkibe barande :
-                                # format_string= r'%A %d %B %Y - %H:%M'
-                                # x=jdatetime.datetime.strptime(end_, format_string,)
-                            # first_part = "".join(start_time.split()[0:2])
-                            # second_part = start_time.split()[2:]
-                            # end_ = [first_part]
-                            # start_time = end_.extend(second_part)
-
+        start_time_bad_format = session.find_elements(By.CSS_SELECTOR, "td")[2].text
+        start_time = chrome.time_format(start_time_bad_format)
         #MAKE DATETIME OBJ IN PERSIAN CALENDAR
-        format_new = r'%A %d %B %Y - %H:%M'
-        start_time = jdatetime.datetime.strptime(start_time, format_new)
-
+        start_time = jdatetime.datetime.strptime(
+            date_string= start_time,
+            format= r'%A %d %B %Y - %H:%M'
+            )
         ## 2.END_TIME >
         #MAKE END_TIME EN TYPED
-        end_time = chrome.convert_persian_to_english_datestr(
-            chrome.format_converter(
-                session.find_elements(By.CSS_SELECTOR, "td")[3].text
-                )
-            )
+        end_time_bad_format = session.find_elements(By.CSS_SELECTOR, "td")[3].text
+        end_time = chrome.time_format(end_time_bad_format)
         #MAKE DATETIME OBJ IN PERSIAN CALENDAR
-        format_new = r'%A %d %B %Y - %H:%M'
-        end_time = jdatetime.datetime.strptime(end_time, format_new)
+        end_time = jdatetime.datetime.strptime(
+            date_string= end_time,
+            format= r'%A %d %B %Y - %H:%M'
+            )
 
-        ## MAKE A RECORD ON DATAFRAME
+        ## MAKE A RECORD ON DATAFRAME (all in iso format)
         sessions_df.loc[len(sessions_df)] = {
-            "start": start_time,
-            "end": end_time
+            "start_persian": start_time.isoformat(),
+            "end_persian": end_time.isoformat(),
+            "start_christian":start_time.togregorian().isoformat(),
+            "end_christian":end_time.togregorian().isoformat(),
         }
 
 
