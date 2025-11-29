@@ -25,8 +25,8 @@ excel_fp_dir.mkdir(exist_ok=True)
 excel_fp = excel_fp_dir/'result.xlsx'
 chrome.classes_df.index= pd.RangeIndex(1, len(chrome.classes_df)+1)
 ## TODO : make a notification for when the excel file is open and we have access denied from OS
-chrome.classes_df.to_excel(excel_fp,"all_classes")
-
+chrome.classes_df.to_excel(excel_writer=excel_fp, sheet_name="all_classes")
+print(f"\nclasses_df STORED TO EXCEL FILE\nFile Path: {excel_fp}\n")
 ## LOOP THROUGH CLASSES_DF FOR EVERY LINK IS IN IT,
 for i, clss in chrome.classes_df.iterrows():
     ## GET TO PAGE 
@@ -40,6 +40,10 @@ for i, clss in chrome.classes_df.iterrows():
         data={},
         columns=["start_persian", "end_persian", "start_christian", "end_christian", "event_id", "event_link", "event_iCalUID"]
     )
+    try:
+        print(f"<sesssions_df> SUCCESSFULLY CREATED FOR <{clss['Fenglish']}>")
+    except:
+        print(f"<sesssions_df> SUCCESSFULLY CREATED FOR <{clss['lesson_name']}>")
 
     ## LOOP THROUGH EACH SESSION AND FILL A DATAFRAME AND SHEET FOR IT WITH END AND START TIME AND DATE IN EXCEL FILE
     session_index = 1
@@ -72,13 +76,13 @@ for i, clss in chrome.classes_df.iterrows():
 
         ## MAKE A EVENT FOR EACH SESSION IN GOOGLE CALENDAR
         event_response = calendar.make_new_event(
-            title= f"Class: ({session_index}/{len(all_sessions)}) {clss["Fenglish"]}",
+            title= f"BOT-ADDED Class: ({session_index}/{len(all_sessions)}) {clss["Fenglish"]}",
             start_time= start_time.time(),
             end_time= end_time.time(),
             start_date= start_time.togregorian().date(),
             end_date= end_time.togregorian().date(),
             # TODO: make description clean
-            description= f"----------\nID=<{clss['ID']}>,\ndepartment=<{clss['department']}>\nsemester=<{clss['semester']}>\nGroup Num.=<{clss['lesson_group_number']}-{clss['sub-gp']}>\nclass type=<{clss['class Type(distance/in-Person)']}>\nLINK-Reline=<{clss['link']}>\n----------"
+            description= f"MADE BY GOOGLE CALENDAR EVENT SUBMITER (By https://www.github.com/erfaw)\n----------\nID: {clss['ID']},\ndepartment: {clss['department']}\nsemester: {clss['semester']}\nGroup Num.: {clss['lesson_group_number']}-{clss['sub-gp']}\nclass type: {clss['class Type(distance/in-Person)']}\nLINK-Reline: {clss['link']}\n----------"
         )
 
         ## MAKE A RECORD ON DATAFRAME (all in iso format)
@@ -92,7 +96,7 @@ for i, clss in chrome.classes_df.iterrows():
             "event_iCalUID":event_response['iCalUID'],
         }
         session_index += 1
-
+    print(f"EVENT CREATED FOR ALL SESSIONS OF <{clss['Fenglish']}>")
     ## MAKE INDEXES OF DATAFRAME BEGIN WITH 1
     sessions_df.index=pd.RangeIndex(1,len(sessions_df)+1)
 
@@ -105,6 +109,12 @@ for i, clss in chrome.classes_df.iterrows():
             sheet_name=f"{clss["lesson_name"]}",
             # startrow= 1
         )
-    # TODO: make a notification for 'end of procedure'
-    
+    print(f"STORE DATA FOR <{clss['Fenglish']}> CLASS\n")
+
+# make a notification for 'end of procedure'
+notification.notify(
+    title="Google Calendar Event Submiter",
+    message=f"We Are ALL SET! DONE",
+    timeout=30  # Duration in seconds
+)    
 print("\nALL CLASSES AND SESSIONS INSERTED TO EXCEL FILE WITH GREGORIAN FORMAT DATE !!")
