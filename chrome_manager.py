@@ -124,3 +124,11 @@ class ChromeManager:
         for fa, en in persian_months.items():
             s = s.replace(fa, en)
         return s
+    
+    def time_format(self, string):
+        """use 'self.convert_persian_to_english_datestr()' and 'self.format_converter()' to return a acceptable format of datetime string."""
+        return self.convert_persian_to_english_datestr(
+            self.format_converter(
+                string
+                )
+            )
