@@ -3,6 +3,7 @@ from consts import *
 
 class GoogleCalendarManager:
     def __init__(self):
+        self.remove_url = "https://www.googleapis.com/calendar/v3/calendars/primary/events/"
         self.creds = None 
         self.service = None
         self.events = None
@@ -116,7 +117,7 @@ class GoogleCalendarManager:
                 'overrides': [
                 {'method': 'popup', 'minutes': 15},
                 {'method': 'popup', 'minutes': 1},
-                {'method': 'popup', 'minutes': 60*24*30},
+                {'method': 'popup', 'minutes': 60*24*1},
                 ],
             },
             ## SET COLOR OF EVENT (MUST BE RED FOR CLASSES)
@@ -130,3 +131,11 @@ class GoogleCalendarManager:
         ).execute()
         print(f'EVENT CREATED')
         return response
+    
+    def remove_event(self, _id,):
+        """remove a event with its id"""
+        self.service.events().delete(
+            calendarId= 'primary',
+            eventId= _id,
+        ).execute()
+        print("EVENT DELETED!!")
