@@ -1,3 +1,7 @@
+
+
+-----------------------------------
+
 # Project Setup – Google Calendar API (Python)
 
 This project uses the Google Calendar API, which requires OAuth credentials.
