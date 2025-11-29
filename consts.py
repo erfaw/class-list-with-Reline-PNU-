@@ -15,3 +15,33 @@ EVENT_COLOR_ID = {
 }
 
 RELINE_URL = "https://lms.markazi.pnu.ac.ir/"
+
+persian_weekdays = {
+    "یک شنبه": "Sunday",
+    "یکشنبه": "Sunday",
+    "دو شنبه": "Monday",
+    "دوشنبه": "Monday",
+    "سه شنبه": "Tuesday",
+    "سه‌شنبه": "Tuesday",
+    "چهار شنبه": "Wednesday",
+    "چهارشنبه": "Wednesday",
+    "پنج شنبه": "Thursday",
+    "پنجشنبه": "Thursday",
+    "جمعه": "Friday",
+    "شنبه": "Saturday",
+}
+
+persian_months = {
+    "فروردین": "Farvardin",
+    "اردیبهشت": "Ordibehesht",
+    "خرداد": "Khordad",
+    "تیر": "Tir",
+    "مرداد": "Mordad",
+    "شهریور": "Shahrivar",
+    "مهر": "Mehr",
+    "آبان": "Aban",
+    "آذر": "Azar",
+    "دی": "Dey",
+    "بهمن": "Bahman",
+    "اسفند": "Esfand",
+}
