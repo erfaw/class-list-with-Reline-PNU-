@@ -22,6 +22,7 @@ excel_fp_dir = current_dir/'output'
 excel_fp_dir.mkdir(exist_ok=True)
 excel_fp = excel_fp_dir/'result.xlsx'
 chrome.classes_df.index= pd.RangeIndex(1, len(chrome.classes_df)+1)
+## TODO : make a notification for when the excel file is open and we have access denied from OS
 chrome.classes_df.to_excel(excel_fp,"all_classes")
 
 ## LOOP THROUGH CLASSES_DF FOR EVERY LINK IS IN IT,
@@ -81,6 +82,7 @@ for i, clss in chrome.classes_df.iterrows():
             sheet_name=f"{clss["lesson_name"]}",
             # startrow= 1
         )
+    # TODO: make a notification for 'end of procedure'
     print()
 ## make a test event to learn.
         # calendar.make_new_event(
