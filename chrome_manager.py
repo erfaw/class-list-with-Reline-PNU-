@@ -68,7 +68,7 @@ class ChromeManager:
         ).until(
             EC.title_is("داشبورد")
         ):
-            print(f"LOGGED IN TO RELINE\nuser:\t<{username}>\n")
+            print(f"\nLOGGED IN TO RELINE\nuser:\t<{username}>\n")
 
     def go_to_classes_part(self):
         self.driver.find_element(By.XPATH, "//a[contains(text(),'کلاس ها')]").click()
@@ -97,6 +97,7 @@ class ChromeManager:
             data={},
             columns=["ID", "department", "semester", "lesson_name", "lesson_group_number", "sub-gp", "master", "class Type(distance/in-Person)", "link", "Fenglish"]
         )
+        print(f"DATAFRAME SUCCESSFULLY CREATED FOR ALL CLASSES: classes_df")
 
         ## catch each part of table and record it to DF
         for lesson in all_this_term_classes_title:
@@ -135,6 +136,5 @@ class ChromeManager:
                 "link":lesson_link,
                 "Fenglish": lesson_fenglish_name,
             }
-            print()
         
         print("\nALL CLASSES SCRAPED TO DATAFRAME!! \n")
