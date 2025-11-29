@@ -27,6 +27,8 @@ import pandas as pd
 from pathlib import Path
 #jdatetime
 import jdatetime
+#plyer
+from plyer import notification
 
 ### 3. self made
 from google_calendar_manager import GoogleCalendarManager
