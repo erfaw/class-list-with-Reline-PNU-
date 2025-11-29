@@ -75,11 +75,16 @@ for i, clss in chrome.classes_df.iterrows():
             "end_christian":end_time.togregorian().isoformat(),
         }
 
+        ## TODO: MAKE A EVENT FOR EACH SESSION IN GOOGLE CALENDAR
+        # calendar.make_new_event(
+        #     title= 
+        # )
 
     ## MAKE INDEXES OF DATAFRAME BEGIN WITH 1
     sessions_df.index=pd.RangeIndex(1,len(sessions_df)+1)
 
     # TODO: catch 'Permision Denied OS' and exit file which is open right now
+
     ## WRITE DATAFRAME IN A SHEET WITH OWN SHEET_NAME IN EXCEL FILE
     with pd.ExcelWriter(excel_fp, mode='a', if_sheet_exists='overlay', engine='openpyxl') as writer:
         sessions_df.to_excel(
@@ -88,7 +93,8 @@ for i, clss in chrome.classes_df.iterrows():
             # startrow= 1
         )
     # TODO: make a notification for 'end of procedure'
-    print()
+    
+print("\nALL CLASSES AND SESSIONS INSERTED TO EXCEL FILE WITH GREGORIAN FORMAT DATE !!")
 
 ## make a test event to learn.
         # calendar.make_new_event(
