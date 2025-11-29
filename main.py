@@ -47,24 +47,40 @@ for i, clss in chrome.classes_df.iterrows():
             is_first_round = False
             continue
 
-        ## CATCH START AND END TIME FROM THAT ROW OF TABLE
-        start_time = chrome.format_converter(session.find_elements(By.CSS_SELECTOR, "td")[2].text)
+        ### CATCH START AND END TIME FROM THAT ROW OF TABLE
+        ## 1.START >
+        #MAKE START_TIME EN TYPED
+        start_time = chrome.convert_persian_to_english_datestr(
+            chrome.format_converter(
+                session.find_elements(By.CSS_SELECTOR, "td")[2].text
+                )
+            )
 
-        # TODO : somehow 1. convert this format to en format, 2. somehow convert persian calendar to christian calendar
-                # if len(start_time.split()) != 6 and len(start_time.split()) > 6:
+                # TODO : somehow 1. convert this format to en format, 2. somehow convert persian calendar to christian calendar
+                # if len(start_time.split()) != 6 or len(start_time.split()) > 6:
+                    # TODO : figure it out how get object from these code, (i curious about chrome.format_converter, we must try one time without it)
+                    ### tarkibe barande :
+                                # format_string= r'%A %d %B %Y - %H:%M'
+                                # x=jdatetime.datetime.strptime(end_, format_string,)
+                            # first_part = "".join(start_time.split()[0:2])
+                            # second_part = start_time.split()[2:]
+                            # end_ = [first_part]
+                            # start_time = end_.extend(second_part)
 
-                #     # TODO : figure it out how get object from these code, (i curious about chrome.format_converter, we must try one time without it)
-                #     ### tarkibe barande :
-                #                 # format_string= r'%A %d %B %Y - %H:%M'
-                #                 # x=jdatetime.datetime.strptime(end_, format_string,)
+        #MAKE DATETIME OBJ IN PERSIAN CALENDAR
+        format_new = r'%A %d %B %Y - %H:%M'
+        start_time = jdatetime.datetime.strptime(start_time, format_new)
 
-
-                #     first_part = "".join(start_time.split()[0:2])
-                #     second_part = start_time.split()[2:]
-                #     end_ = [first_part]
-                #     end_.extend(second_part)
-
-        end_time = chrome.format_converter(session.find_elements(By.CSS_SELECTOR, "td")[3].text)
+        ## 2.END_TIME >
+        #MAKE END_TIME EN TYPED
+        end_time = chrome.convert_persian_to_english_datestr(
+            chrome.format_converter(
+                session.find_elements(By.CSS_SELECTOR, "td")[3].text
+                )
+            )
+        #MAKE DATETIME OBJ IN PERSIAN CALENDAR
+        format_new = r'%A %d %B %Y - %H:%M'
+        end_time = jdatetime.datetime.strptime(end_time, format_new)
 
         ## MAKE A RECORD ON DATAFRAME
         sessions_df.loc[len(sessions_df)] = {
@@ -72,9 +88,11 @@ for i, clss in chrome.classes_df.iterrows():
             "end": end_time
         }
 
+
     ## MAKE INDEXES OF DATAFRAME BEGIN WITH 1
     sessions_df.index=pd.RangeIndex(1,len(sessions_df)+1)
 
+    # TODO: catch 'Permision Denied OS' and exit file which is open right now
     ## WRITE DATAFRAME IN A SHEET WITH OWN SHEET_NAME IN EXCEL FILE
     with pd.ExcelWriter(excel_fp, mode='a', if_sheet_exists='overlay', engine='openpyxl') as writer:
         sessions_df.to_excel(
@@ -84,6 +102,7 @@ for i, clss in chrome.classes_df.iterrows():
         )
     # TODO: make a notification for 'end of procedure'
     print()
+
 ## make a test event to learn.
         # calendar.make_new_event(
         #     # TODO: check if this code need change or not (based on input from reline)
