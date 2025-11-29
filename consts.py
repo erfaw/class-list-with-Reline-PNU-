@@ -46,6 +46,7 @@ persian_months = {
     "اسفند": "Esfand",
 }
 
+## TODO : figure it out for fenglishs
 Fenglish_class_names = {
     "مبانی رایانش ابری": "Mabani Rayaneshe Abri (Shahram Shaverdian)",
     "مبانی امنیت اطلاعات": "Mabani Amniat Etela'at (Tayebeh Khoshroy Nemati)",
