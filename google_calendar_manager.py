@@ -78,12 +78,13 @@ class GoogleCalendarManager:
         description:str='',
         location= None,
         color_id:int= EVENT_COLOR_ID["tomato"]
-        ):
-        """make a Event in user Google Calendar and fill it with given arg details."""
+        ) -> json:
+        """make a Event in user Google Calendar and fill it with given arg details. then, return event creation response"""
         ## MAKE A DATETIME WIHT ISO FORMAT (AND BRING BACK 4 MINUTES TO FIT WITH REAL WORLD)
         start_date_time = (datetime.datetime.combine(
             start_date, start_time, self.iran_tz
         )-timedelta(minutes=4)).isoformat()
+
         end_date_time = (datetime.datetime.combine(
             end_date, end_time, self.iran_tz
         )-timedelta(minutes=4)).isoformat()
@@ -123,8 +124,9 @@ class GoogleCalendarManager:
         }
 
         ## CALL API AND MAKE EVENT ON USER PRIMARLY CALENDAR 
-        self.service.events().insert(
+        response = self.service.events().insert(
             calendarId= 'primary',
             body= event
         ).execute()
-        print('EVENT CREATED')
+        print(f'EVENT CREATED')
+        return response
