@@ -72,5 +72,3 @@ except ImportError:
 from google_calendar_manager import GoogleCalendarManager
 from chrome_manager import ChromeManager
 from consts import *
-
-## TODO: GOOD TO BE KIND OF CODE HERE: TO CHECK WITH ALL 'requirements.txt': if user had it: skip, if user didn't had it: pip install for it
