@@ -74,6 +74,7 @@ for i, clss in chrome.classes_df.iterrows():
             format= r'%A %d %B %Y - %H:%M'
             )
 
+        #TODO: figure it out: how make a new calendar in user profile and get calendar_id, then make events on that calendar (we can do it manually and get calendar_id, but check we could do it with this SCOPE or not)
         ## MAKE A EVENT FOR EACH SESSION IN GOOGLE CALENDAR
         event_response = calendar.make_new_event(
             ## TODO: in title parameter, -1 on len(all_sessions) (for number of all sessions), to be right, check it later.
