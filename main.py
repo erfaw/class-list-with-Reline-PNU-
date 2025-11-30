@@ -82,7 +82,6 @@ for i, clss in chrome.classes_df.iterrows():
             end_time= end_time.time(),
             start_date= start_time.togregorian().date(),
             end_date= end_time.togregorian().date(),
-            # TODO: make description clean
             description= f"MADE BY GOOGLE CALENDAR EVENT SUBMITER (By https://www.github.com/erfaw)\n----------\nID: {clss['ID']},\ndepartment: {clss['department']}\nsemester: {clss['semester']}\nGroup Num.: {clss['lesson_group_number']}-{clss['sub-gp']}\nclass type: {clss['class Type(distance/in-Person)']}\nLINK-Reline: {clss['link']}\n----------"
         )
 
