@@ -76,7 +76,8 @@ for i, clss in chrome.classes_df.iterrows():
 
         ## MAKE A EVENT FOR EACH SESSION IN GOOGLE CALENDAR
         event_response = calendar.make_new_event(
-            title= f"BOT-ADDED Class: ({session_index}/{len(all_sessions)}) {clss["Fenglish"]}",
+            ## TODO: in title parameter, -1 on len(all_sessions) (for number of all sessions), to be right, check it later.
+            title= f"BOT-ADDED Class: ({session_index}/{len(all_sessions)-1}) {clss["Fenglish"]}",
             start_time= start_time.time(),
             end_time= end_time.time(),
             start_date= start_time.togregorian().date(),
