@@ -71,14 +71,17 @@ class GoogleCalendarManager:
 
     def make_new_event(
         self,
+        # NON-DEFAULT VALUES ==>
         title:str,
         start_time:datetime.time,
         end_time :datetime.time,
-        end_date:datetime.date=datetime.date.today(),
-        start_date:datetime.date=datetime.date.today(),
-        description:str='',
+        # DEFAULT VALUES ==>
+        end_date:datetime.date= datetime.date.today(),
+        start_date:datetime.date= datetime.date.today(),
+        description:str= '',
         location= None,
-        color_id:int= EVENT_COLOR_ID["tangerine"]
+        color_id:int= EVENT_COLOR_ID["tangerine"],
+        calendar_id:str= 'primary' 
         ) -> json:
         """make a Event in user Google Calendar and fill it with given arg details. then, return event creation response"""
         ## MAKE A DATETIME WIHT ISO FORMAT (AND BRING BACK 4 MINUTES TO FIT WITH REAL WORLD)
@@ -91,7 +94,7 @@ class GoogleCalendarManager:
         )-timedelta(minutes=4)).isoformat()
 
         ## MAKE EVENT DETAILS IN A DICTIONARY TO PASS TO API
-        event = {
+        event = { #notice: this is a boilerplate of Event Resources of a EVENT that must be like this, DONT REMOVE ANY PART OF IT.
             'summary': title,
             'location': None,
             'description': description,
@@ -115,9 +118,9 @@ class GoogleCalendarManager:
             'reminders': {
                 'useDefault': False,
                 'overrides': [
-                {'method': 'popup', 'minutes': 15},
-                {'method': 'popup', 'minutes': 1},
-                {'method': 'popup', 'minutes': 60*24*1},
+                    {'method': 'popup', 'minutes': 15},
+                    {'method': 'popup', 'minutes': 1},
+                    {'method': 'popup', 'minutes': 60*24*1},
                 ],
             },
             ## SET COLOR OF EVENT (MUST BE RED FOR CLASSES)
@@ -126,21 +129,23 @@ class GoogleCalendarManager:
 
         ## CALL API AND MAKE EVENT ON USER PRIMARLY CALENDAR 
         response = self.service.events().insert(
-            calendarId= 'primary',
+            calendarId= calendar_id,
             body= event
         ).execute()
+        # TODO: ADD EVENT TITLE TO BELOW PRINT STATEMENT for adding event
         print(f'EVENT CREATED')
         return response
     
-    def remove_event(self, _id,):
+    def remove_event(self, _id, calendar_id='primary'):
         """remove a event with its id"""
         try:
             self.service.events().delete(
-                calendarId= 'primary',
+                calendarId= calendar_id,
                 eventId= _id,
             ).execute()
         except HttpError as e: 
             # TODO: good to be just e.message
             print(e)
         else:
+            # TODO: ADD EVENT TITLE TO BELOW PRINT STATEMENT for removing event
             print("EVENT DELETED!!")
