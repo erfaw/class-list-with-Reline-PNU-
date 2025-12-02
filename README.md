@@ -24,11 +24,16 @@ New-Item .env -ItemType File
 USERNAME_RELINE='your-username-must-be-here'
 PASSWORD_RELINE='your-password-must-be-here'
 ```
+
 Note: dont share this `.env` to others!
 
-4. Go to Project Setup – Google Calendar API (Python) and follow procedure to get `credential.json`
+4. Go to [Project Setup – Google Calendar API (Python)](https://github.com/erfaw/class-list-with-Reline-PNU-/blob/main/README.md#project-setup--google-calendar-api-python) and follow procedure to get `credential.json`
+
 5. Copy-Paste `credential.json` next to `main.py`
+   
 NOTE: dont share this `credential.json` to others!
+
+6. 
 
 # What is [PNU](https://pnu.ac.ir/en-US/DouranPortal/7293/page/Payame-Noor-University) ?!
 The acronym PNU refers to Payame Noor University, which is a major distance learning and open university system in Iran. 🎓
