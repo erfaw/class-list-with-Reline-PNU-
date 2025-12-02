@@ -3,7 +3,7 @@
 # What This Program Does Exactly?
 
 This application is designed for students who want to seamlessly integrate their academic life with their digital planning tools. 
-## If you are:
+## Could work for you If you are:
 - A PNU (Payame Noor University) student needing to manage course schedules.
 - Someone who habitually uses [Google Calendar](https://calendar.google.com/) to organize tasks, set reminders, and track events.
 This program automates the process of fetching and adding your PNU-related events (for now just Class Dates) directly into your Google Calendar, ensuring you never miss. It acts as the bridge between your university schedule and your personal digital organizer.
@@ -17,14 +17,13 @@ This program automates the process of fetching and adding your PNU-related event
 git clone https://github.com/erfaw/class-list-with-Reline-PNU-
 ```
 
--------------------------------
 
 ### ✅ 2. Install dependencies
 ```
 pip install -r requirements.txt
 ```
 
---------------------------------
+
 
 ### ✅ 3. make a `.env` file next to `main.py`:
 
@@ -32,7 +31,7 @@ pip install -r requirements.txt
 New-Item .env -ItemType File
 ```
 
-----------------------------
+
 
 ### ✅ 4. Fill your `USERNAME_RELINE` and `PASSWORD_RELINE` of [RELINE](https://lms.pnu.ac.ir/) profile like this:
 ```
@@ -42,7 +41,7 @@ PASSWORD_RELINE="your-password-must-be-here"
 
 Note: dont share this `.env` to others!
 
------------------------
+
 
 ### ✅ 5. Create your Google API credentials and get `credential.json`
 This project uses the Google Calendar API, which requires OAuth credentials.
@@ -80,7 +79,7 @@ project/
 ```
 NOTE: dont share this `credential.json` to others!
 
-------------------------------------------------
+
 
 ### ✅ 6. First run
 
