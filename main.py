@@ -27,6 +27,10 @@ chrome.classes_df.index= pd.RangeIndex(1, len(chrome.classes_df)+1)
 ## TODO : make a notification for when the excel file is open and we have access denied from OS
 chrome.classes_df.to_excel(excel_writer=excel_fp, sheet_name="all_classes")
 print(f"\nclasses_df STORED TO EXCEL FILE\nFile Path: {excel_fp}\n")
+
+## REMOVE BASE CALENDAR THE REPLACE A NEW FRESH WITH SAME NAME TO FILL.
+calendar.BASE_CALENDAR_ID = calendar.remove_previous_calendar_and_replace_new()
+
 ## LOOP THROUGH CLASSES_DF FOR EVERY LINK IS IN IT,
 for i, clss in chrome.classes_df.iterrows():
     ## GET TO PAGE 
@@ -78,6 +82,7 @@ for i, clss in chrome.classes_df.iterrows():
         ## MAKE A EVENT FOR EACH SESSION IN GOOGLE CALENDAR
         event_response = calendar.make_new_event(
             ## TODO: in title parameter, -1 on len(all_sessions) (for number of all sessions), to be right, check it later.
+            calendar_id= calendar.BASE_CALENDAR_ID,
             title= f"BOT-ADDED Class: ({session_index}/{len(all_sessions)-1}) {clss["Fenglish"]}",
             start_time= start_time.time(),
             end_time= end_time.time(),
