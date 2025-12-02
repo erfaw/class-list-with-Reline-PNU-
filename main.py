@@ -79,9 +79,9 @@ for i, clss in chrome.classes_df.iterrows():
             )
 
         #TODO: figure it out: how make a new calendar in user profile and get calendar_id, then make events on that calendar (we can do it manually and get calendar_id, but check we could do it with this SCOPE or not)
+
         ## MAKE A EVENT FOR EACH SESSION IN GOOGLE CALENDAR
         event_response = calendar.make_new_event(
-            ## TODO: in title parameter, -1 on len(all_sessions) (for number of all sessions), to be right, check it later.
             calendar_id= calendar.BASE_CALENDAR_ID,
             title= f"BOT-ADDED Class: ({session_index}/{len(all_sessions)-1}) {clss["Fenglish"]}",
             start_time= start_time.time(),
