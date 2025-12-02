@@ -3,10 +3,12 @@ from consts import *
 
 class GoogleCalendarManager:
     def __init__(self):
-        self.remove_url = "https://www.googleapis.com/calendar/v3/calendars/primary/events/"
+        # self.remove_url = "https://www.googleapis.com/calendar/v3/calendars/primary/events/"
         self.creds = None 
         self.service = None
-        self.events = None
+        # self.events = None
+        self.BASE_CALENDAR_NAME = "BOT-ADDED CLASSES"
+        self.BASE_CALENDAR_ID = None
         self.iran_tz = pytz.timezone('Asia/Tehran') 
         self.check_token()
         ## MAKE CALENDAR SERVICE, TO DO API CALLS THROUGH IT
@@ -34,7 +36,7 @@ class GoogleCalendarManager:
         """build a service from 'Google Calendar' to make api calls and manipulate calendar for user."""
         return build("calendar", "v3", credentials=self.creds)
     
-    def get_and_print_upcoming_10_events(self):
+    def get_and_print_upcoming_10_events(self, calendar_id):
         """api call to 'Google Calendar API' and print next 10 events (if exists)"""
         ## GET CURRENT DATE TIME
         now = datetime.datetime.now(tz=datetime.timezone.utc).isoformat()
@@ -46,7 +48,7 @@ class GoogleCalendarManager:
         events_result = (
             self.service.events()
             .list(
-                calendarId="primary",
+                calendarId= calendar_id,
                 timeMin=now,
                 maxResults=10,
                 singleEvents=True,
@@ -70,7 +72,7 @@ class GoogleCalendarManager:
 
         print("\nEND OF EVENTS!!")  
 
-    def make_new_calendar(self, _calednar_name):
+    def make_new_calendar(self, _calednar_name) -> json:
         """makes a new calendar and pass calendar id"""
         body_calendar = {
             'summary': _calednar_name,
@@ -78,6 +80,7 @@ class GoogleCalendarManager:
         }
         response = self.service.calendars().insert(body=body_calendar).execute()
         print(f"NEW CALENDAR INITIALIZED <{response['summary']}>")
+        return response
         #TODO: check it.
     
     def delete_sec_calendar(self, _calendar_id):
@@ -102,6 +105,7 @@ class GoogleCalendarManager:
     def make_new_event(
         self,
         # NON-DEFAULT VALUES ==>
+        calendar_id:str,
         title:str,
         start_time:datetime.time,
         end_time :datetime.time,
@@ -111,7 +115,6 @@ class GoogleCalendarManager:
         description:str= '',
         location= None,
         color_id:int= EVENT_COLOR_ID["tangerine"],
-        calendar_id:str= 'primary' 
         ) -> json:
         """make a Event in user Google Calendar and fill it with given arg details. then, return event creation response"""
         ## MAKE A DATETIME WIHT ISO FORMAT (AND BRING BACK 4 MINUTES TO FIT WITH REAL WORLD)
@@ -166,7 +169,7 @@ class GoogleCalendarManager:
         print(f'EVENT CREATED')
         return response
     
-    def remove_event(self, _id, calendar_id='primary'):
+    def remove_event(self, _id, calendar_id):
         """remove a event with its id"""
         try:
             self.service.events().delete(
@@ -179,3 +182,18 @@ class GoogleCalendarManager:
         else:
             # TODO: ADD EVENT TITLE TO BELOW PRINT STATEMENT for removing event
             print("EVENT DELETED!!")
+
+    def remove_previous_calendar_and_replace_new(self) -> str:
+        """remove base calendar and build it from scratch"""
+        for calendar in self.calendar_ids:
+            if calendar['summary'] == self.BASE_CALENDAR_NAME:
+                result = calendar['id']
+                break
+            else: 
+                result = False
+        
+        if result:
+            self.delete_sec_calendar(result)
+
+        response = self.make_new_calendar(self.BASE_CALENDAR_NAME)
+        return response['id']
