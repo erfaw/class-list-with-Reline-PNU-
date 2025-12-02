@@ -11,6 +11,7 @@ class GoogleCalendarManager:
         self.check_token()
         ## MAKE CALENDAR SERVICE, TO DO API CALLS THROUGH IT
         self.service = self.make_service_for_calendar()
+        self.calendar_ids:dict = self.get_list_of_user_calendars()
     
     def check_token(self):
         """checking existion of 'token.json' and credentials. THE FILE TOKEN.JSON STORES THE USER'S ACCESS AND REFRESH TOKENS, AND IS CREATED AUTOMATICALLY WHEN THE AUTHORIZATION FLOW COMPLETES FOR THE FIRST TIME."""
@@ -68,6 +69,35 @@ class GoogleCalendarManager:
             index += 1
 
         print("\nEND OF EVENTS!!")  
+
+    def make_new_calendar(self, _calednar_name):
+        """makes a new calendar and pass calendar id"""
+        body_calendar = {
+            'summary': _calednar_name,
+            'timeZone': f"{self.iran_tz}",
+        }
+        response = self.service.calendars().insert(body=body_calendar).execute()
+        print(f"NEW CALENDAR INITIALIZED <{response['summary']}>")
+        #TODO: check it.
+    
+    def delete_sec_calendar(self, _calendar_id):
+        """permenantly delete a second calendar with given calendarId"""
+        self.service.calendars().delete(
+            calendarId= _calendar_id
+            ).execute()
+        print(f"PREV-CALENDAR DELETED!")
+        
+    def clear_sec_calendar(self, _calendar_id):
+        """clear an existing calendar with given calendarId"""
+        ## TODO: check it .
+        self.service.calendars().clear(
+            calendarId= _calendar_id
+            ).execute()
+
+    def get_list_of_user_calendars(self) -> list:
+        """api call and get current user calendars list with data from each."""
+        response = self.service.calendarList().list().execute()
+        return response['items']
 
     def make_new_event(
         self,
