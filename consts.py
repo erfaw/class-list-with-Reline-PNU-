@@ -1,4 +1,5 @@
-SCOPES = ["https://www.googleapis.com/auth/calendar.events"]
+# SCOPES = ["https://www.googleapis.com/auth/calendar.events", "https://www.googleapis.com/auth/calendar"]
+SCOPES = ["https://www.googleapis.com/auth/calendar"]
 
 EVENT_COLOR_ID = {
     "lavender": 1,
