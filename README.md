@@ -65,6 +65,8 @@ APIs & Services → Credentials → Create Credentials → OAuth Client ID
 
 * Name: anything you want
 
+NOTE: You have to choose `https://www.googleapis.com/auth/calendar` in 'scope' part, to program work currectly
+
 6) Click “Create” and download the file:
 `credentials.json`
 
