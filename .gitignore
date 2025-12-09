@@ -4,6 +4,7 @@ token.json
 /output
 /archive
 remove_test.py
+update_classes_in_google_calendar.bat
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
